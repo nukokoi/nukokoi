@@ -1,12 +1,19 @@
-steps:
-  - uses: actions/checkout@v2
-  - uses: sarisia/actions-readme-feed@v1
-    with:
-      url: 'https://qiita.com/nukokoi/feed'
-      file: 'README.md'
-  - run: |
-      git config --global user.name "${{ github.actor }}"
-      git config --global user.email "${{ github.actor }}@users.noreply.github.com"
-      git add .
-      git commit -m "docs: update feed" || true
-      git push
+on:
+  schedule:
+    - cron: '0 */6 * * *'
+
+jobs:
+  readme:
+    runs-on: ubuntu-latest
+	steps:
+	  - uses: actions/checkout@v2
+	  - uses: sarisia/actions-readme-feed@v1
+	    with:
+	      url: 'https://qiita.com/nukokoi/feed'
+	      file: 'README.md'
+	  - run: |
+	      git config --global user.name "${{ github.actor }}"
+	      git config --global user.email "${{ github.actor }}@users.noreply.github.com"
+	      git add .
+	      git commit -m "docs: update feed" || true
+	      git push
